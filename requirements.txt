@@ -1,0 +1,14 @@
+kafka-python
+pandas
+openpyxl
+psycopg2-binary 
+pyspark
+apache-airflow-providers-apache-spark
+apache-airflow-providers-databricks
+configparser
+datetime
+pandas
+pathlib
+praw
+numpy
+s3fs

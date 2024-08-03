@@ -1,0 +1,84 @@
+version: '4'
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile
+  env_file:
+    - airflow.env
+  volumes:
+    - ./jobs:/opt/airflow/jobs
+    - ./config:/opt/airflow/config
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./pipelines:/opt/airflow/pipelines
+    # - ./config/airflow.cfg:/opt/airflow/airflow.cfg
+    - ./etl:/opt/airflow/etl
+    - ./data:/opt/airflow/data
+    - ./utils:/opt/airflow/utils
+    - ./requirements.txt:/opt/airflow/requirements.txt
+  depends_on:
+    - postgres
+  networks:
+    - test_network
+
+services:
+  postgres:
+    image: postgres:14.0
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    networks:
+      - test_network
+  
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+  
+  # spark-master:
+  #   image: bitnami/spark:3
+  #   container_name: spark-master
+  #   ports:
+  #     - "7077:7077" #default port for spark master to listen for spark worker registration and communication.
+  #     - "4040:4040" #This port is for Spark-master web-UI
+  #   networks:
+  #     - spark_network
+  
+  # spark-worker:
+  #   image: bitnami/spark:3
+  #   container_name: spark-worker
+  #   depends_on:
+  #     - spark-master
+  #   environment:
+  #     SPARK_MASTER_URL: spark://spark-master:7077
+  #     SPARK_WORKER_MEMORY: 2g #set amount of memory that spark will use
+  #     SPARK_WORKER_CORES: 2 # cpu cores that spark worker will use.
+  #     #replicas: 3 #Here we can set desired number of worker nodes.
+  #   networks:
+  #     - spark_network
+
+  webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "6060:8080"
+    depends_on:
+      - scheduler
+
+  scheduler:
+    <<: *airflow-common
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname golu --lastname rawat --role Admin --email golu@gmail.com --password admin && airflow scheduler"
+
+networks:
+  test_network:
+  
+  # spark_network:
+  #   driver: bridge
