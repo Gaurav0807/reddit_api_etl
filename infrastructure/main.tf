@@ -56,12 +56,12 @@ resource "aws_iam_role" "s3_role" {
       {
         "Effect": "Allow",
         "Principal": {
-          "AWS": "arn:aws:iam::008971645028:user/h5gp0000-s"
+          "AWS": ""
         },
         "Action": "sts:AssumeRole",
         "Condition": {
           "StringEquals": {
-            "sts:ExternalId": "STB34535_SFCRole=18_7MF5uC1r9QJsCBSdaoVIK8ODnpE="
+            "sts:ExternalId": ""
           }
         }
       }
