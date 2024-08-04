@@ -1,7 +1,7 @@
 # reddit_api_etl
 Reddit data pull using API and then schedule based on airflow and docker
 
-![Alt text](Flow_Chart.png)
+![Alt text](Architecture Diagram.png)
 
 # 1. Reddit API:
 
