@@ -66,5 +66,14 @@ select * from snowflake_integration.ingestion_layer.reddit_data
 
 
 
+-- Snowpipe Integration
+
+
+create or replace pipe SNOWFLAKE_INTEGRATION.INGESTION_LAYER.REDDIT_PIPE_test
+Auto_INGEST = TRUE as
+copy into SNOWFLAKE_INTEGRATION.INGESTION_LAYER.REDDIT_SAMPLE  from @s3_external_stage
+
+show pipes
+
 
 
