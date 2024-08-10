@@ -68,12 +68,32 @@ select * from snowflake_integration.ingestion_layer.reddit_data
 
 -- Snowpipe Integration
 
+  create table snowflake_integration.ingestion_layer.reddit_sample like snowflake_integration.ingestion_layer.reddit_data
+
+  OR 
+
+  create or replace TABLE SNOWFLAKE_INTEGRATION.INGESTION_LAYER.REDDIT_SAMPLE (
+	ID VARCHAR(10000),
+	TITLE VARCHAR(10000),
+	TOPIC VARCHAR(10000),
+	SCORE NUMBER(38,0),
+	NUM_COMMENTS VARCHAR(10000) ,
+	AUTHOR VARCHAR(10000),
+	CREATED_UTC TIMESTAMP_NTZ(9),
+	URL VARCHAR(10000),
+	SELF_TEXT_DESCRIPTION VARCHAR(10000),
+	UPVOTE_RATIO NUMBER(38,0) ,
+	OVER_18 BOOLEAN,
+	EDITED BOOLEAN ,
+	SPOILER BOOLEAN,
+	STICKIED BOOLEAN
+  );
 
 create or replace pipe SNOWFLAKE_INTEGRATION.INGESTION_LAYER.REDDIT_PIPE_test
 Auto_INGEST = TRUE as
 copy into SNOWFLAKE_INTEGRATION.INGESTION_LAYER.REDDIT_SAMPLE  from @s3_external_stage
 
-show pipes
+show pipes;
 
 
 
