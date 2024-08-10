@@ -31,3 +31,14 @@ Reddit data pull using API and then schedule based on airflow and docker
 
 - Stores the processed data.
 - Provides scalable and durable storage.
+
+
+# 6. Snowflake
+
+- Start with Integration of snowflake to aws using IAM Role. Check Infrastructure Folder. 
+- Create External Table . Check Snowflake folder
+
+- # SnowPipe
+- Create Snowpipe in snowflake . 
+- Copy sqs arn from snowflake using show pipe to s3 bucket.
+- Try to upload file to s3 bucket .And check Data in tables 
